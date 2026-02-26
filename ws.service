@@ -1,0 +1,13 @@
+[Unit]
+After=mongod.service
+
+[Service]
+Environment="NODE_ENV=production"
+Environment="NODE_CONFIG_DIR=/home/rcd/apps/config"
+Environment="TZ=America/Sao_Paulo"
+
+User=rcd
+ExecStart=/home/rcd/apps/servidor_esm/start.sh
+
+[Install]
+WantedBy=default.target

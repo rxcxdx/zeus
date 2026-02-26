@@ -1,0 +1,37 @@
+{
+  "name": "servidor_esm",
+  "version": "14.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@faker-js/faker": "^9.8.0",
+    "@inquirer/prompts": "^8.1.0",
+    "basic-auth": "^2.0.1",
+    "bignumber.js": "^9.3.1",
+    "chalk": "^5.6.2",
+    "check-types": "^11.2.3",
+    "clean-deep": "^3.4.0",
+    "config": "^3.3.12",
+    "dayjs": "^1.11.19",
+    "eslint": "^9.28.0",
+    "express": "^5.1.0",
+    "jest": "^30.0.5",
+    "jsonfile": "^6.2.0",
+    "kind-of": "^6.0.3",
+    "lodash-es": "^4.17.21",
+    "mongodb": "6.16.0",
+    "morgan": "^1.10.0",
+    "nanoid": "^5.1.6",
+    "npm": "^11.9.0",
+    "prettier": "^3.5.3",
+    "sequelize": "^6.37.7",
+    "sqlite3": "5.1.7",
+    "winston": "^3.17.0",
+    "yargs": "^18.0.0",
+    "zod": "^4.2.1"
+  },
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "formatar": "prettier . --write"
+  }
+}

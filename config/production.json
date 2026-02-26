@@ -1,0 +1,6 @@
+{
+  "isMorgan": false,
+  "logConfig": {
+    "level": "warn"
+  }  
+}

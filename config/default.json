@@ -1,0 +1,14 @@
+{
+  "isMorgan": true,
+  "eagle": "/home/rcd/apps/eagle.sqlite",
+  "dbConfig": {
+    "url": "mongodb://localhost:27017",
+    "dbName": "app_database"
+  },
+  "logConfig": {
+    "level": "debug",
+    "filename": "/home/rcd/apps/servidor_esm/logger.log",
+    "silent": false
+  },
+  "userclientsFilename": "/home/rcd/apps/servidor_esm/userclients.json"
+}
