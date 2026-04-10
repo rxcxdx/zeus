@@ -1,0 +1,11 @@
+node_modules
+package-lock.json
+eslint.config.js
+enviar.sh
+validar.js
+github.sh
+limpeza.sh
+*.test.js
+manual.txt
+offline
+prettier.config.js
