@@ -1,0 +1,8 @@
+node_modules
+package-lock.json
+validar.js
+*.sh
+*.test.js
+manual.txt
+offline
+*.config.js
