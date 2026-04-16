@@ -6,9 +6,9 @@ const mock = [
 ]
 
 const itens = buildItens(mock)
-const alvo = itens[0]
+const resposta = itens[0]
 
 test('buildItens', () => {
-  expect(alvo.quantidade).toBe(3)
-  expect(alvo.subtotal).toBe(3)
+  expect(resposta.quantidade).toBe(3)
+  expect(resposta.subtotal).toBe(3)
 })
