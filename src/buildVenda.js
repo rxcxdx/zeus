@@ -4,21 +4,26 @@ import BigNumber from 'bignumber.js'
 import { schemaVenda } from './schemas.js'
 import { calcSubtotalItem } from './matematica.js'
 
+export function calcItens(cart) {
+  return sumBy(cart, 'quantidade')
+}
+
+export function calcTotal(registro) {
+  return registro.cart.reduce((acc, o) => acc.plus(o.subtotal), new BigNumber(0)).toNumber()
+}
+
 /**
  * Returns obj que vai ser inserido no mongo
  * @param {object} entrada
  * @returns {object}
  */
-export default function buildVenda(entrada) {
+export function buildVenda(entrada) {
   const novo = schemaVenda.parse(entrada)
-  let total = new BigNumber(0)
-  novo.cart.forEach((o) => {
-    const subtotal = calcSubtotalItem(o)
-    o.subtotal = subtotal.toNumber()
-    total = total.plus(subtotal)
+  novo.cart.forEach((o) => {    
+    o.subtotal = calcSubtotalItem(o)
   })
-  novo.total = total.toNumber()
-  novo.itens = sumBy(novo.cart, 'quantidade')
+  novo.itens = calcItens(novo.cart)
+  novo.total = calcTotal(novo)
   novo._id = nanoid()
   novo.dt = new Date()
   return novo

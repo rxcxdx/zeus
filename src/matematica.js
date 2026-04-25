@@ -2,10 +2,10 @@ import BigNumber from 'bignumber.js'
 
 /**
  * @param {object} item
- * @returns {BigNumber}
+ * @returns {number}
  */
 export function calcSubtotalItem(item) {
-  return BigNumber(item.valor).multipliedBy(item.quantidade)
+  return BigNumber(item.valor).multipliedBy(item.quantidade).toNumber()
 }
 
 /**

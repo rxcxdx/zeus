@@ -11,11 +11,15 @@ function getUserclients() {
 }
 
 function login(credentials) {
-  assert(!isEmpty(credentials))
-  const userclients = getUserclients()
-  const doc = find(userclients, credentials)
-  assert(doc)
-  return pick(doc, ['name', 'access_token'])
+  try {
+    const userclients = getUserclients()
+    const doc = find(userclients, credentials)
+    assert(doc, 'não encontrou userclient')
+    return pick(doc, ['name', 'access_token'])
+  } catch (error) {
+    logger.error('erro no login:' + error.message)
+    throw error
+  }
 }
 
 function grant(formulario) {
@@ -23,7 +27,7 @@ function grant(formulario) {
   const userclients = getUserclients()
   const doc = find(userclients, formulario)
   assert(doc)
-  logger.info('grant de ' + doc.name)  
+  logger.info('grant de ' + doc.name)
 }
 
 export default {

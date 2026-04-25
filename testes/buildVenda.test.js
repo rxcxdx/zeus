@@ -1,4 +1,4 @@
-import buildVenda from '../src/buildVenda.js'
+import {buildVenda} from '../src/buildVenda.js'
 
 const mock = {
   username: 'zeca',
