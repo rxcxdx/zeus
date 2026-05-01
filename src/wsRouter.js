@@ -3,7 +3,7 @@ import auth from 'basic-auth'
 import flanker from './flanker.js'
 import eagle from './eagle.js'
 import bear from './bear.js'
-import { schemaMargemLucro } from './schemas.js'
+import { parseLucro } from './parse-lucro.js'
 import { calcMargemLucro } from './matematica.js'
 import endPointItens from './endPointItens.js'
 import endPointIndice from './endPointIndice.js'
@@ -36,7 +36,7 @@ router.get('/produtos', (req, res, next) => {
     .catch(next)
 })
 
-router.post('/buy', (req, res, next) => {
+router.put('/buy', (req, res, next) => {
   endPointBuy(req.body)
     .then(() => res.end())
     .catch(next)
@@ -51,8 +51,8 @@ router.get('/loja', (req, res, next) => {
     .catch(next)
 })
 
-router.post('/itens', (req, res, next) => {
-  endPointItens(req.body)
+router.get('/itens', (req, res, next) => {
+  endPointItens(req.query)
     .then((docs) => res.send(docs))
     .catch(next)
 })
@@ -118,24 +118,21 @@ router.get('/userclients', (req, res) => {
   res.send(docs)
 })
 
-router.post('/relatorio', (req, res, next) => {
-  endPointRelatorio(req.body)
+router.get('/relatorio', (req, res, next) => {
+  endPointRelatorio(req.query)
     .then((doc) => res.send(doc))
     .catch(next)
 })
 
-router.post('/indice', (req, res, next) => {
-  endPointIndice(req.body)
+router.get('/indice', (req, res, next) => {
+  endPointIndice(req.query)
     .then((docs) => res.send(docs))
     .catch(next)
 })
 
 router.post('/lucro', (req, res) => {
-  const formulario = schemaMargemLucro.parse(req.body)
-  const v = calcMargemLucro(formulario.alpha, formulario.beta).toFormat({
-    decimalSeparator: ',',
-    suffix: ' %'
-  })
+  const formulario = parseLucro(req.body)
+  const v = calcMargemLucro(formulario.alpha, formulario.beta).toFormat({ decimalSeparator: ',', suffix: ' %'})
   res.send(v)
 })
 
@@ -145,16 +142,14 @@ router.get('/grafico/:isoMonth', (req, res, next) => {
     .catch(next)
 })
 
-router.post('/editar/venda', (req, res, next) => {
+router.put('/editar/venda', (req, res, next) => {
   flanker
     .editarVenda(req.body)
     .then((o) => res.send(o))
     .catch(next)
 })
 
-
-// FOCO
-router.post('/editar/item', (req, res, next) => {
+router.put('/editar/item', (req, res, next) => {
   flanker
     .editarItem(req.body)
     .then((o) => res.send(o))

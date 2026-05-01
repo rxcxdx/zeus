@@ -1,7 +1,7 @@
 import flanker from './flanker.js'
-import {buildVenda} from './buildVenda.js'
+import { parseVenda } from './parse-venda.js'
 
 export default async function endPointBuy(body) {
-  const o = buildVenda(body)
+  const o = parseVenda(body)
   await flanker.gravarVenda(o)
 }

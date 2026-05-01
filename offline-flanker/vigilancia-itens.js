@@ -9,7 +9,6 @@ const client = new MongoClient(MONGO_CONFIG.url, {
 await client.connect()
 const db = client.db(MONGO_CONFIG.dbName)
 const collection = db.collection(MONGO_CONFIG.collectionName)
-
 const registros = await collection.find({}).toArray()
 await client.close()
 const cart = registros.flatMap((o) => o.cart)

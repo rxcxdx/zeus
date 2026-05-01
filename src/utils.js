@@ -1,3 +1,6 @@
+import config from 'config'
+import util from "util";
+import chalk from 'chalk';
 import assert from 'node:assert/strict'
 import { sumBy, countBy, groupBy } from 'lodash-es'
 import BigNumber from 'bignumber.js'
@@ -26,7 +29,9 @@ export function buildItens(cart) {
   const rs = Object.entries(j).map(([descricao, l]) => ({
     descricao,
     quantidade: sumBy(l, 'quantidade'),
-    subtotal: l.reduce((acc, o) => acc.plus(o.subtotal), new BigNumber(0)).toNumber()
+    subtotal: l
+      .reduce((acc, o) => acc.plus(o.subtotal), new BigNumber(0))
+      .toNumber()
   }))
   rs.sort((a, b) => a.subtotal - b.subtotal).reverse()
   return rs
@@ -41,10 +46,9 @@ export function assertIsoMonth(v) {
   }
 }
 
-export function assertDecimalPlaces(v) {
-  try {
-    assert(new BigNumber(v).decimalPlaces() <= 2)
-  } catch {
-    throw new Error('decimalPlaces deve ser de no máximo duas casas decimais')
-  }
+export function rcdlog(entrada, depth) {
+  if (config.get('zeus.logger.silentConsole')) return
+  let str = util.inspect(entrada, { depth })
+  str = chalk.yellowBright.bgBlack(str)
+  console.log(str)
 }

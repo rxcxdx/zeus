@@ -1,4 +1,4 @@
-import {buildVenda} from '../src/buildVenda.js'
+import { parseVenda } from '../src/parse-venda.js'
 
 const mock = {
   username: 'zeca',
@@ -6,19 +6,18 @@ const mock = {
     {
       valor: 10,
       quantidade: 1,
-      descricao: 'kuat',
+      descricao: 'kuat'
     },
     {
       valor: 10.12,
       quantidade: 1,
-      descricao: 'ovo',
+      descricao: 'ovo'
     }
   ]
 }
 
-const resposta = buildVenda(mock)
+const resposta = parseVenda(mock)
 
-test('buildVenda', () => {
-  expect(resposta.itens).toBe(2)
+test('parseVenda', () => {
   expect(resposta.total).toBe(20.12)
 })

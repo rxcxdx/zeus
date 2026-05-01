@@ -6,7 +6,7 @@ import { buildItens } from './utils.js'
 
 const schema = z.object({
   dia: z.iso.date(),
-  descricao: z.string().optional()
+  descricao: z.string().trim().optional()
 })
 
 function filtro(cart, descricao) {
@@ -14,13 +14,10 @@ function filtro(cart, descricao) {
   return filter(cart, (o) => o.descricao.includes(descricao))
 }
 
-export default async function endPointItens(body) {
-  const formulario = schema.parse(body)
+export default async function endPointItens(entrada) {
+  const formulario = schema.parse(entrada)
   const j = dayjs(formulario.dia)
-  const registros = await flanker.getVendas(
-    j.startOf('day').toDate(),
-    j.endOf('day').toDate()
-  )
+  const registros = await flanker.getVendas(j.startOf('day').toDate(), j.endOf('day').toDate(), undefined)
   const cart = filtro(flatMap(registros, 'cart'), formulario.descricao)
   return buildItens(cart)
 }

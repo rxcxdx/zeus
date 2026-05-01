@@ -1,5 +1,7 @@
 import { calcMargemLucro } from '../src/matematica.js'
 
-test('calcMargemLucro', () => {    
-  expect(calcMargemLucro(2.83, 2).toNumber()).toBe(29.33)
+const resposta = calcMargemLucro(2.83, 2).toNumber()
+
+test('calcMargemLucro', () => {
+  expect(resposta).toBe(29.33)
 })

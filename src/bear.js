@@ -13,9 +13,13 @@ function getUserclients() {
 function login(credentials) {
   try {
     const userclients = getUserclients()
-    const doc = find(userclients, credentials)
+    const filtro = {
+      username: credentials.name,
+      senha: credentials.pass
+    }
+    const doc = find(userclients, filtro)
     assert(doc, 'não encontrou userclient')
-    return pick(doc, ['name', 'access_token'])
+    return pick(doc, ['username', 'access_token'])
   } catch (error) {
     logger.error('erro no login:' + error.message)
     throw error
@@ -25,9 +29,13 @@ function login(credentials) {
 function grant(formulario) {
   assert(!isEmpty(formulario))
   const userclients = getUserclients()
-  const doc = find(userclients, formulario)
+  const filtro = {
+    username: formulario.username,
+    access_token: formulario.access_token
+  }
+  const doc = find(userclients, filtro)
   assert(doc)
-  logger.info('grant de ' + doc.name)
+  logger.info('grant de ' + doc.username)
 }
 
 export default {

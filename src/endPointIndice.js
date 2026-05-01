@@ -5,13 +5,13 @@ import flanker from './flanker.js'
 const TEMPLATE = 'DD/MM/YYYY HH:mm:ss.SSS'
 
 const schema = z.object({
-  gte: z.iso.datetime().pipe(z.coerce.date()),
-  lte: z.iso.datetime().pipe(z.coerce.date())
+  gte: z.iso.date().transform((val) => dayjs(val).startOf('d').toDate()),
+  lte: z.iso.date().transform((val) => dayjs(val).endOf('d').toDate())
 })
 
-export default async function endPointIndice(body) {
-  const formulario = schema.parse(body)
-  const registros = await flanker.getVendas(formulario.gte, formulario.lte)
+export default async function endPointIndice(entrada) {
+  const formulario = schema.parse(entrada)
+  const registros = await flanker.getVendas(formulario.gte, formulario.lte, undefined)
   const resposta = []
   registros.forEach((o) => {
     resposta.push({

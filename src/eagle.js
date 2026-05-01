@@ -1,9 +1,8 @@
 import config from 'config'
 import assert from 'node:assert/strict'
 import { Sequelize, DataTypes } from 'sequelize'
-import { get } from 'lodash-es'
-import { schemaProdutoUpsert } from './schemas.js'
-import { assertDecimalPlaces } from './utils.js'
+import { rcdlog } from './utils.js'
+import { parseProduto } from './parse-produto.js'
 
 const CONFIG_GLOBAL = {
   freezeTableName: true
@@ -58,14 +57,13 @@ const Categoria = sequeConexao.define(
 Produto.belongsTo(Categoria, { onDelete: 'RESTRICT' })
 
 async function upsertProduto(entrada) {
-  const o = schemaProdutoUpsert.parse(entrada)
-  assertDecimalPlaces(o.valor)
-  await Produto.upsert({ ...o, categoriaId: get(o, 'categoria.id') })
+  const o = parseProduto(entrada)
+  rcdlog(o, 1)
+  await Produto.upsert(o)
 }
 
 async function getProduto(id) {
   const modelo = await Produto.findByPk(id, {
-    attributes: ['id', 'descricao', 'valor', 'updatedAt'],
     rejectOnEmpty: true,
     include: { all: true }
   })

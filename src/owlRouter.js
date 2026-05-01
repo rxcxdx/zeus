@@ -1,6 +1,5 @@
 import express from 'express'
 import config from 'config'
-import flanker from './flanker.js'
 import getZone from './getZone.js'
 import { defaultTo } from 'lodash-es'
 
@@ -20,13 +19,6 @@ router.get('/zone', (req, res) => {
 
 router.get('/config', (req, res) => {
   res.send(config.util.toObject(config))
-})
-
-router.get('/stats', (req, res, next) => {
-  flanker
-    .getStats()
-    .then((o) => res.send(o))
-    .catch(next)
 })
 
 export default router

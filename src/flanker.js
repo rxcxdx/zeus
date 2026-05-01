@@ -3,11 +3,10 @@ import assert from 'node:assert/strict'
 import { MongoClient } from 'mongodb'
 import check from 'check-types'
 import * as z from 'zod'
+import clean from 'clean-deep'
 import logger from './logger.js'
 
-const MONGO_CONFIG = config.util.toObject(config.get('zeus.mongo'))
-
-const client = new MongoClient(MONGO_CONFIG.url, {
+const client = new MongoClient(config.get('zeus.mongo.url'), {
   serverSelectionTimeoutMS: 5000
 })
 
@@ -19,21 +18,19 @@ try {
   logger.warn('mongo nao conectado no servidor')
 }
 
-const db = client.db(MONGO_CONFIG.dbName)
-const collection = db.collection(MONGO_CONFIG.collectionName)
+const db = client.db(config.get('zeus.mongo.dbName'))
+const collection = db.collection(config.get('zeus.mongo.collectionName'))
 
-async function getVendas(gte, lte) {
+async function getVendas(gte, lte, username) {
   check.assert.date(gte)
   check.assert.date(lte)
   logger.debug(gte)
   logger.debug(lte)
-  const query = {
-    dt: {
-      $gte: gte,
-      $lte: lte
-    }
+  const filtro = {
+    dt: { $gte: gte, $lte: lte },
+    username
   }
-  const rs = await collection.find(query).toArray()
+  const rs = await collection.find(clean(filtro)).toArray()
   return rs
 }
 
@@ -49,7 +46,7 @@ async function gravarVenda(o) {
 
 async function getTimelineVendas() {
   const options = {
-    limit: 100,
+    limit: 10,
     projection: { cart: false },
     sort: [['dt', -1]]
   }
@@ -69,11 +66,6 @@ async function getTimelineItens() {
 async function apagarVenda(_id) {
   const { deletedCount } = await collection.deleteOne({ _id })
   assert(deletedCount, 'nada foi apagado')
-}
-
-async function getStats() {
-  const stats = await db.stats()
-  return stats
 }
 
 async function editarVenda(entrada) {
@@ -120,6 +112,5 @@ export default {
   apagarVenda,
   editarVenda,
   editarItem,
-  getTimelineItens,
-  getStats
+  getTimelineItens
 }
