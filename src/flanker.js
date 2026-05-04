@@ -56,7 +56,7 @@ async function getTimelineVendas() {
 
 async function getTimelineItens() {
   const options = {
-    limit: 150,
+    limit: 30,
     sort: [['dt', -1]]
   }
   const registros = await collection.find({}, options).toArray()
@@ -71,19 +71,20 @@ async function apagarVenda(_id) {
 async function editarVenda(entrada) {
   const schema = z.object({
     _id: z.string(),
-    dt: z.coerce.date(),
+    dt: z.coerce.date().optional(),
     username: z.string().optional(),
-    obs: z.string().optional()
+    obs: z.string().optional(),
   })
-  const o = schema.parse(entrada)
+  const formulario = schema.parse(entrada)
   const filtro = {
-    _id: o._id
+    _id: formulario._id
   }
   const modificar = {
-    $set: o
+    $set: formulario
   }
-  const rs = await collection.updateOne(filtro, modificar)
-  return rs
+  const o = await collection.updateOne(filtro, modificar)
+  assert(o.matchedCount, 'venda não existe')
+  return o
 }
 
 async function editarItem(entrada) {
@@ -91,17 +92,18 @@ async function editarItem(entrada) {
     identifier: z.string(),
     obs: z.string()
   })
-  const o = schema.parse(entrada)
+  const formulario = schema.parse(entrada)
   const filtro = {
-    cart: { $elemMatch: { identifier: o.identifier } }
+    cart: { $elemMatch: { identifier: formulario.identifier } }
   }
   const modificar = {
     $set: {
-      'cart.$.obs': o.obs
+      'cart.$.obs': formulario.obs
     }
   }
-  const rs = await collection.updateOne(filtro, modificar)
-  return rs
+  const o = await collection.updateOne(filtro, modificar)
+  assert(o.matchedCount, 'venda não existe')
+  return o
 }
 
 export default {

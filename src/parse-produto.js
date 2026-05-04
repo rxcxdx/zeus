@@ -5,7 +5,7 @@ const schema = z.object({
     id: z.string().default(() => uuidv4()),
     descricao: z.string().min(1),
     valor: z.number().positive(),
-    categoriaId: z.string().nullable()
+    categoriaId: z.string().default(null).nullable()
 })
 
 export function parseProduto(entrada) {

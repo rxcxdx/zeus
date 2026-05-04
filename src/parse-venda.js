@@ -15,7 +15,7 @@ const schemaItem = z.object({
 const schemaVenda = z.object({
   username: z.string().min(1).trim(),
   cart: z.array(schemaItem).min(1),
-  obs: z.string().trim().optional()
+  obs: z.string().trim().default('')
 })
 
 export function calcTotal(registro) {
