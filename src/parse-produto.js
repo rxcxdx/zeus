@@ -9,6 +9,7 @@ const schema = z.object({
 })
 
 export function parseProduto(entrada) {
+    // gera id automatico para eagle
     const o = schema.parse(entrada)
     return o
 }

@@ -38,7 +38,7 @@ router.get('/produtos', (req, res, next) => {
 
 router.put('/buy', (req, res, next) => {
   endPointBuy(req.body)
-    .then(() => res.end())
+    .then((o) => res.send(o))
     .catch(next)
 })
 

@@ -19,9 +19,7 @@ const schemaVenda = z.object({
 })
 
 export function calcTotal(registro) {
-  return registro.cart
-    .reduce((acc, o) => acc.plus(o.subtotal), new BigNumber(0))
-    .toNumber()
+  return registro.cart.reduce((acc, o) => acc.plus(o.subtotal), new BigNumber(0)).toNumber()
 }
 
 /**

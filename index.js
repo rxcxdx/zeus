@@ -8,9 +8,8 @@ import owlRouter from './src/owlRouter.js'
 
 const app = express()
 app.use(express.json())
-const MORGAN_CONFIG = config.util.toObject(config.get('zeus.morgan'))
-if (MORGAN_CONFIG.enable) {
-  app.use(morgan(MORGAN_CONFIG.format, { immediate: MORGAN_CONFIG.immediate }))
+if (config.get('zeus.morgan.enable')) {  
+  app.use(morgan('tiny', { immediate: config.get('zeus.morgan.immediate') }))
 }
 app.use('/ws', wsRouter)
 app.use('/ws/owl', owlRouter)
