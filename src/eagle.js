@@ -81,7 +81,7 @@ async function getProdutos() {
 
 async function loja() {
   const modelos = await Produto.findAll({
-    attributes: ['id', 'descricao', 'valor']
+    attributes: ['descricao', 'valor']
   })
   const rs = conversor(modelos)
   rs.sort((a, b) => a.descricao.localeCompare(b.descricao))

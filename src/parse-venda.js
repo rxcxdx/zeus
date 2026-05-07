@@ -12,9 +12,11 @@ const schemaItem = z.object({
 })
 
 const schemaVenda = z.object({
+  _id: z.string().default(() => uuidv4()),
+  dt: z.date().default(() => new Date()),
   username: z.string().min(1).trim(),
   cart: z.array(schemaItem).min(1),
-  obs: z.string().trim().default('')
+  obs: z.string().trim().default(''),
 })
 
 export function calcTotal(registro) {
@@ -27,12 +29,13 @@ export function calcTotal(registro) {
  * @returns {object}
  */
 export function parseVenda(entrada) {
-  const novo = schemaVenda.parse(entrada)
-  novo.cart.forEach((o) => {
-    o.subtotal = calcSubtotalItem(o)
-  })
+  const valido = schemaVenda.parse(entrada)
+  const cart = valido.cart.map((o) => ({ ...o, subtotal: calcSubtotalItem(o) }))
+  const novo = {
+    ...valido,
+    cart
+  }
   novo.total = calcTotal(novo)
-  novo._id = uuidv4()
-  novo.dt = new Date()
   return novo
 }
+

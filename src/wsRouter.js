@@ -28,11 +28,8 @@ router.delete('/venda/:_id', (req, res, next) => {
 })
 
 router.get('/produtos', (req, res, next) => {
-  eagle
-    .getProdutos()
-    .then((docs) => {
-      res.send(docs)
-    })
+  eagle.getProdutos()
+    .then((docs) => res.send(docs))
     .catch(next)
 })
 
@@ -43,11 +40,8 @@ router.put('/buy', (req, res, next) => {
 })
 
 router.get('/loja', (req, res, next) => {
-  eagle
-    .loja()
-    .then((docs) => {
-      res.send(docs)
-    })
+  eagle.loja()
+    .then((docs) => res.send(docs))
     .catch(next)
 })
 
@@ -67,9 +61,7 @@ router.put('/produto', (req, res, next) => {
 router.get('/produto/:id', (req, res, next) => {
   eagle
     .getProduto(req.params.id)
-    .then((o) => {
-      res.send(o)
-    })
+    .then((o) => res.send(o))
     .catch(next)
 })
 
@@ -132,8 +124,8 @@ router.get('/indice', (req, res, next) => {
 
 router.post('/lucro', (req, res) => {
   const formulario = parseLucro(req.body)
-  const v = calcMargemLucro(formulario.alpha, formulario.beta).toFormat({ decimalSeparator: ',', suffix: ' %'})
-  res.send(v)
+  const rs = calcMargemLucro(formulario.alpha, formulario.beta).toFormat({ decimalSeparator: ',', suffix: ' %'})
+  res.send(rs)
 })
 
 router.get('/grafico/:isoMonth', (req, res, next) => {

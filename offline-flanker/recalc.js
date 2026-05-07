@@ -20,4 +20,5 @@ const modificar = {
 }
 const o = await collection.updateOne(filtro, modificar)
 console.log(o)
+console.log(o.modifiedCount ? 'modificado' : 'nada modificado')
 await client.close()
