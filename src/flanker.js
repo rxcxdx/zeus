@@ -1,10 +1,11 @@
-import config from 'config'
 import assert from 'node:assert/strict'
+import config from 'config'
 import { MongoClient } from 'mongodb'
 import check from 'check-types'
 import * as z from 'zod'
 import clean from 'clean-deep'
 import logger from './logger.js'
+import { rcdlog } from './utils.js'
 
 const client = new MongoClient(config.get('zeus.mongo.url'), {
   serverSelectionTimeoutMS: 5000
@@ -68,38 +69,20 @@ async function apagarVenda(_id) {
   assert(deletedCount, 'nada foi apagado')
 }
 
+const schemaEditarVenda = z.object({
+  _id: z.string(),
+  dt: z.coerce.date().optional(),
+  username: z.string().trim().min(1).optional(),
+  obs: z.string().trim().optional(),
+})
 async function editarVenda(entrada) {
-  const schema = z.object({
-    _id: z.string(),
-    dt: z.coerce.date().optional(),
-    username: z.string().optional(),
-    obs: z.string().optional(),
-  })
-  const formulario = schema.parse(entrada)
+  const formulario = schemaEditarVenda.parse(entrada)
+  rcdlog(formulario, 1)
   const filtro = {
     _id: formulario._id
   }
   const modificar = {
     $set: formulario
-  }
-  const o = await collection.updateOne(filtro, modificar)
-  assert(o.matchedCount, 'venda não existe')
-  return o
-}
-
-async function editarItem(entrada) {
-  const schema = z.object({
-    identifier: z.string(),
-    obs: z.string()
-  })
-  const formulario = schema.parse(entrada)
-  const filtro = {
-    cart: { $elemMatch: { identifier: formulario.identifier } }
-  }
-  const modificar = {
-    $set: {
-      'cart.$.obs': formulario.obs
-    }
   }
   const o = await collection.updateOne(filtro, modificar)
   assert(o.matchedCount, 'venda não existe')
@@ -113,6 +96,5 @@ export default {
   getTimelineVendas,
   apagarVenda,
   editarVenda,
-  editarItem,
   getTimelineItens
 }

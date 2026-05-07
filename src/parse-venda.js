@@ -1,11 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 import * as z from 'zod'
-import { nanoid } from 'nanoid'
 import BigNumber from 'bignumber.js'
 import { calcSubtotalItem } from './matematica.js'
 
 const schemaItem = z.object({
-  identifier: z.uuidv4().default(() => uuidv4()),
+  identifier: z.string().default(() => uuidv4()),
   valor: z.number().positive(),
   quantidade: z.int().positive(),
   descricao: z.string().min(1).trim(),
@@ -33,7 +32,7 @@ export function parseVenda(entrada) {
     o.subtotal = calcSubtotalItem(o)
   })
   novo.total = calcTotal(novo)
-  novo._id = nanoid()
+  novo._id = uuidv4()
   novo.dt = new Date()
   return novo
 }

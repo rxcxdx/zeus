@@ -1,21 +1,20 @@
 import config from 'config'
 import { MongoClient } from 'mongodb'
-import { calcTotal } from '../src/parse-venda.js'
 import { input } from '@inquirer/prompts';
 
-const VENDA = await input({ message: '_id?', required: true });
+const IDENTIFIER = await input({ message: 'identifier?', required: true });
+const OBS = await input({ message: 'obs?', default: '' });
 const MONGO_CONFIG = config.util.toObject(config.get('zeus.mongo'))
 const client = new MongoClient(MONGO_CONFIG.url)
 await client.connect()
 const db = client.db(MONGO_CONFIG.dbName)
 const collection = db.collection(MONGO_CONFIG.collectionName)
-const registro = await collection.findOne({ _id: VENDA })
 const filtro = {
-  _id: VENDA
+  cart: { $elemMatch: { identifier: IDENTIFIER } }
 }
 const modificar = {
   $set: {
-    total: calcTotal(registro)
+    'cart.$.obs': OBS
   }
 }
 const o = await collection.updateOne(filtro, modificar)

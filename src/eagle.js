@@ -58,8 +58,8 @@ Produto.belongsTo(Categoria, { onDelete: 'RESTRICT' })
 
 async function upsertProduto(entrada) {
   const o = parseProduto(entrada)
-  rcdlog(o, 1)
   await Produto.upsert(o)
+  rcdlog(o, 1)
 }
 
 async function getProduto(id) {

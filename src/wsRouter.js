@@ -149,11 +149,4 @@ router.put('/editar/venda', (req, res, next) => {
     .catch(next)
 })
 
-router.put('/editar/item', (req, res, next) => {
-  flanker
-    .editarItem(req.body)
-    .then((o) => res.send(o))
-    .catch(next)
-})
-
 export default router
