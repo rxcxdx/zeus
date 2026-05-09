@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import * as z from 'zod'
 import { flatMap, filter } from 'lodash-es'
 import flanker from './flanker.js'
-import { buildItens } from './utils.js'
+import buildItens from './buildItens.js'
 
 const schema = z.object({
   dia: z.iso.date(),

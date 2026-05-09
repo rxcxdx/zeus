@@ -2,39 +2,21 @@ import config from 'config'
 import util from "util";
 import chalk from 'chalk';
 import assert from 'node:assert/strict'
-import { sumBy, countBy, groupBy } from 'lodash-es'
-import BigNumber from 'bignumber.js'
+import { countBy } from 'lodash-es'
 import dayjs from 'dayjs'
 
-export function buildRelatorio(registros) {
-  const total = registros.reduce((acc, o) => acc.plus(o.total), new BigNumber(0)).toNumber()
-  return {
-    vendas: registros.length,
-    total: total
-  }
+function getDia(dt) {
+  return dayjs(dt).format('DD')
 }
 
 export function buildGrafico(registros) {
   registros.forEach((o) => {
-    o.dia = dayjs(o.dt).format('DD')
+    o.dia = getDia(o.dt)
   })
   const j = countBy(registros, 'dia')
   const lista = Object.entries(j).map(([dia, vendas]) => ({ dia, vendas }))
   lista.sort((a, b) => a.dia - b.dia)
   return lista
-}
-
-export function buildItens(cart) {
-  const j = groupBy(cart, 'descricao')
-  const rs = Object.entries(j).map(([descricao, l]) => ({
-    descricao,
-    quantidade: sumBy(l, 'quantidade'),
-    subtotal: l
-      .reduce((acc, o) => acc.plus(o.subtotal), new BigNumber(0))
-      .toNumber()
-  }))
-  rs.sort((a, b) => a.subtotal - b.subtotal).reverse()
-  return rs
 }
 
 export function assertIsoMonth(v) {
@@ -51,4 +33,37 @@ export function rcdlog(entrada, depth) {
   let str = util.inspect(entrada, { depth })
   str = chalk.yellowBright.bgBlack(str)
   console.log(str)
+}
+
+export function currency(v) {
+  const { format } = Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
+  return format(v)
+}
+
+import BigNumber from 'bignumber.js'
+
+export function sumBySubtotal(arr) {
+  return arr.reduce((acc, o) => acc.plus(o.subtotal), new BigNumber(0)).toNumber()
+}
+
+export function calcTotal(registro) {
+  return sumBySubtotal(registro.cart)
+}
+
+/**
+ * @param {object} item
+ * @returns {number}
+ */
+export function calcSubtotalItem(item) {
+  return BigNumber(item.valor).multipliedBy(item.quantidade).toNumber()
+}
+
+/**
+ * @param {number} a
+ * @param {number} b
+ * @returns {BigNumber}
+ */
+export function calcMargemLucro(a, b) {
+  const piece = new BigNumber(a).minus(b).dividedBy(a)
+  return new BigNumber(100).multipliedBy(piece).decimalPlaces(2)
 }

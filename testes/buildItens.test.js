@@ -1,4 +1,4 @@
-import { buildItens } from '../src/utils.js'
+import buildItens from '../src/buildItens.js'
 
 const mock = [
   { descricao: 'ovo', quantidade: 1, subtotal: 1 },

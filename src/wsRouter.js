@@ -4,7 +4,7 @@ import flanker from './flanker.js'
 import eagle from './eagle.js'
 import bear from './bear.js'
 import { parseLucro } from './parse-lucro.js'
-import { calcMargemLucro } from './matematica.js'
+import { calcMargemLucro } from './utils.js'
 import endPointItens from './endPointItens.js'
 import endPointIndice from './endPointIndice.js'
 import endPointRelatorio from './endPointRelatorio.js'
@@ -45,8 +45,8 @@ router.get('/loja', (req, res, next) => {
     .catch(next)
 })
 
-router.get('/itens', (req, res, next) => {
-  endPointItens(req.query)
+router.post('/itens', (req, res, next) => {
+  endPointItens(req.body)
     .then((docs) => res.send(docs))
     .catch(next)
 })
@@ -110,8 +110,8 @@ router.get('/userclients', (req, res) => {
   res.send(docs)
 })
 
-router.get('/relatorio', (req, res, next) => {
-  endPointRelatorio(req.query)
+router.post('/relatorio', (req, res, next) => {
+  endPointRelatorio(req.body)
     .then((doc) => res.send(doc))
     .catch(next)
 })
@@ -124,7 +124,7 @@ router.get('/indice', (req, res, next) => {
 
 router.post('/lucro', (req, res) => {
   const formulario = parseLucro(req.body)
-  const rs = calcMargemLucro(formulario.alpha, formulario.beta).toFormat({ decimalSeparator: ',', suffix: ' %'})
+  const rs = calcMargemLucro(formulario.alpha, formulario.beta).toFormat({ decimalSeparator: ',', suffix: ' %' })
   res.send(rs)
 })
 

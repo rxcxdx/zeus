@@ -1,7 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import * as z from 'zod'
-import BigNumber from 'bignumber.js'
-import { calcSubtotalItem } from './matematica.js'
+import { calcSubtotalItem, calcTotal } from './utils.js'
 
 const schemaItem = z.object({
   identifier: z.string().default(() => uuidv4()),
@@ -19,12 +18,9 @@ const schemaVenda = z.object({
   obs: z.string().trim().default(''),
 })
 
-export function calcTotal(registro) {
-  return registro.cart.reduce((acc, o) => acc.plus(o.subtotal), new BigNumber(0)).toNumber()
-}
 
 /**
- * Returns obj que vai ser inserido no mongo
+ * obj que vai ser inserido no mongo
  * @param {object} entrada
  * @returns {object}
  */

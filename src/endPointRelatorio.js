@@ -1,11 +1,11 @@
 import dayjs from 'dayjs'
 import * as z from 'zod'
 import flanker from './flanker.js'
-import { buildRelatorio } from './utils.js'
+import buildRelatorio from './buildRelatorio.js'
 
 const schema = z.object({
-  gte: z.iso.date().transform((val) => dayjs(val).startOf('d').toDate()),
-  lte: z.iso.date().transform((val) => dayjs(val).endOf('d').toDate()),
+  gte: z.iso.date().transform((v) => dayjs(v).startOf('d').toDate()),
+  lte: z.iso.date().transform((v) => dayjs(v).endOf('d').toDate()),
   username: z.string().trim().optional()
 })
 

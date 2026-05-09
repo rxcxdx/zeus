@@ -2,13 +2,10 @@ import config from 'config'
 import { MongoClient } from 'mongodb'
 import check from 'check-types'
 
-const MONGO_CONFIG = config.util.toObject(config.get('zeus.mongo'))
-const client = new MongoClient(MONGO_CONFIG.url, {
-  serverSelectionTimeoutMS: 3000
-})
+const client = new MongoClient(config.get('zeus.mongo.url'))
 await client.connect()
-const db = client.db(MONGO_CONFIG.dbName)
-const collection = db.collection(MONGO_CONFIG.collectionName)
+const db = client.db(config.get('zeus.mongo.dbName'))
+const collection = db.collection(config.get('zeus.mongo.collectionName'))
 const registros = await collection.find({}).toArray()
 await client.close()
 try {

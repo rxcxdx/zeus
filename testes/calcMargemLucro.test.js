@@ -1,4 +1,4 @@
-import { calcMargemLucro } from '../src/matematica.js'
+import { calcMargemLucro } from '../src/utils.js'
 
 const resposta = calcMargemLucro(2.83, 2).toNumber()
 

@@ -1,6 +1,6 @@
 import config from 'config'
 import { MongoClient } from 'mongodb'
-import { calcTotal } from '../src/parse-venda.js'
+import { calcTotal } from '../src/utils.js'
 import { input } from '@inquirer/prompts';
 
 const VENDA = await input({ message: '_id?', required: true });

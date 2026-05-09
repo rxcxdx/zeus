@@ -22,6 +22,11 @@ try {
 const db = client.db(config.get('zeus.mongo.dbName'))
 const collection = db.collection(config.get('zeus.mongo.collectionName'))
 
+/**
+ * @param {date} gte
+ * @param {date} lte
+ * @param {string} username
+ */
 async function getVendas(gte, lte, username) {
   check.assert.date(gte)
   check.assert.date(lte)
@@ -37,7 +42,7 @@ async function getVendas(gte, lte, username) {
 
 async function getVenda(_id) {
   const registro = await collection.findOne({ _id })
-  assert(registro, 'venda não existe')
+  check.assert.object(registro, 'venda não existe')
   return registro
 }
 
