@@ -4,7 +4,7 @@ import js from '@eslint/js'
 
 export default defineConfig([
   {
-    languageOptions: { globals: { ...globals.node, ...globals.jest } }
+    languageOptions: { globals: { ...globals.node, ...globals.jasmine } }
   },
   js.configs.recommended
 ])

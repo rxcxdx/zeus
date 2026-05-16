@@ -28,7 +28,8 @@ router.delete('/venda/:_id', (req, res, next) => {
 })
 
 router.get('/produtos', (req, res, next) => {
-  eagle.getProdutos()
+  eagle
+    .getProdutos()
     .then((docs) => res.send(docs))
     .catch(next)
 })
@@ -40,7 +41,8 @@ router.put('/buy', (req, res, next) => {
 })
 
 router.get('/loja', (req, res, next) => {
-  eagle.loja()
+  eagle
+    .loja()
     .then((docs) => res.send(docs))
     .catch(next)
 })
@@ -124,8 +126,8 @@ router.get('/indice', (req, res, next) => {
 
 router.post('/lucro', (req, res) => {
   const formulario = parseLucro(req.body)
-  const rs = calcMargemLucro(formulario.alpha, formulario.beta).toFormat({ decimalSeparator: ',', suffix: ' %' })
-  res.send(rs)
+  const rs = calcMargemLucro(formulario.alpha, formulario.beta)
+  res.send({ margemLucro: rs })
 })
 
 router.get('/grafico/:isoMonth', (req, res, next) => {

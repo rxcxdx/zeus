@@ -1,6 +1,6 @@
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 import * as z from 'zod'
-import { calcSubtotalItem, calcTotal } from './utils.js'
+import { calcSubtotalItem, calcTotalVenda } from './utils.js'
 
 const schemaItem = z.object({
   identifier: z.string().default(() => uuidv4()),
@@ -15,9 +15,8 @@ const schemaVenda = z.object({
   dt: z.date().default(() => new Date()),
   username: z.string().min(1).trim(),
   cart: z.array(schemaItem).min(1),
-  obs: z.string().trim().default(''),
+  obs: z.string().trim().default('')
 })
-
 
 /**
  * obj que vai ser inserido no mongo
@@ -31,7 +30,6 @@ export function parseVenda(entrada) {
     ...valido,
     cart
   }
-  novo.total = calcTotal(novo)
+  novo.total = calcTotalVenda(novo)
   return novo
 }
-

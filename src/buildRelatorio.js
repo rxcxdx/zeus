@@ -1,19 +1,15 @@
-import BigNumber from 'bignumber.js'
 import { sumBy, flatMap } from 'lodash-es'
-
-function getTotal(registros) {
-  return registros.reduce((acc, o) => acc.plus(o.total), new BigNumber(0)).toNumber()
-}
+import sumByCurrency from './sumByCurrency.js'
 
 function getItens(registros) {
-  const j = flatMap(registros, 'cart')    
-  return sumBy(j, 'quantidade')
+  const cart = flatMap(registros, 'cart')
+  return sumBy(cart, 'quantidade')
 }
 
 export default function buildRelatorio(registros) {
   const dto = {
     vendas: registros.length,
-    total: getTotal(registros),
+    total: sumByCurrency(registros, 'total'),
     itens: getItens(registros)
   }
   return dto

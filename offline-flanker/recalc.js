@@ -1,9 +1,9 @@
 import config from 'config'
 import { MongoClient } from 'mongodb'
-import { calcTotal } from '../src/utils.js'
-import { input } from '@inquirer/prompts';
+import { calcTotalVenda } from '../src/utils.js'
+import { input } from '@inquirer/prompts'
 
-const VENDA = await input({ message: '_id?', required: true });
+const VENDA = await input({ message: '_id?', required: true })
 const MONGO_CONFIG = config.util.toObject(config.get('zeus.mongo'))
 const client = new MongoClient(MONGO_CONFIG.url)
 await client.connect()
@@ -15,7 +15,7 @@ const filtro = {
 }
 const modificar = {
   $set: {
-    total: calcTotal(registro)
+    total: calcTotalVenda(registro)
   }
 }
 const o = await collection.updateOne(filtro, modificar)

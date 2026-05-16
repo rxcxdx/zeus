@@ -17,7 +17,11 @@ function filtro(cart, descricao) {
 export default async function endPointItens(entrada) {
   const formulario = schema.parse(entrada)
   const j = dayjs(formulario.dia)
-  const registros = await flanker.getVendas(j.startOf('day').toDate(), j.endOf('day').toDate(), undefined)
+  const registros = await flanker.getVendas(
+    j.startOf('day').toDate(),
+    j.endOf('day').toDate(),
+    undefined
+  )
   const cart = filtro(flatMap(registros, 'cart'), formulario.descricao)
   return buildItens(cart)
 }

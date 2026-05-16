@@ -11,6 +11,10 @@ const schema = z.object({
 
 export default async function endPointRelatorio(entrada) {
   const formulario = schema.parse(entrada)
-  const registros = await flanker.getVendas(formulario.gte, formulario.lte, formulario.username)
+  const registros = await flanker.getVendas(
+    formulario.gte,
+    formulario.lte,
+    formulario.username
+  )
   return buildRelatorio(registros)
 }

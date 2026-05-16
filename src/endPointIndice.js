@@ -11,7 +11,11 @@ const schema = z.object({
 
 export default async function endPointIndice(entrada) {
   const formulario = schema.parse(entrada)
-  const registros = await flanker.getVendas(formulario.gte, formulario.lte, undefined)
+  const registros = await flanker.getVendas(
+    formulario.gte,
+    formulario.lte,
+    undefined
+  )
   const resposta = []
   registros.forEach((o) => {
     resposta.push({

@@ -78,7 +78,7 @@ const schemaEditarVenda = z.object({
   _id: z.string(),
   dt: z.coerce.date().optional(),
   username: z.string().trim().min(1).optional(),
-  obs: z.string().trim().optional(),
+  obs: z.string().trim().optional()
 })
 async function editarVenda(entrada) {
   const formulario = schemaEditarVenda.parse(entrada)

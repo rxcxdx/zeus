@@ -26,12 +26,11 @@ function getErrorZod(error) {
 }
 function getErrorMessage(error) {
   if (error instanceof z.ZodError) return getErrorZod(error)
-  // z.prettifyError(error)
   return error.message
 }
 
 // eslint-disable-next-line
-export default function errorHandling(error, req, res, next) {
+export function errorHandling(error, req, res, next) {
   const message = getErrorMessage(error)
   return res.status(500).send({
     motivo: message,
