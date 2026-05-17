@@ -1,0 +1,9 @@
+npm test
+npm run formatar
+npm test testes/calcSubtotalItem.test.js
+npx prettier . --write
+npx eslint src/
+-----------------------------------------
+congelado
+"sqlite3": "5.1.7"
+motivo? linux-gnu/libm.so.6
